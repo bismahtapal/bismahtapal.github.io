@@ -153,12 +153,11 @@ header.solid{background:rgba(0,0,0,.82);backdrop-filter:blur(8px)}
 .brands .eyebrow{margin-bottom:28px}
 .bm{overflow:hidden;white-space:nowrap;padding:14px 0;border-top:1px solid var(--line)}
 .bm:last-child{border-bottom:1px solid var(--line)}
-.bm>.bi{display:inline-flex;align-items:center;will-change:transform}
-.bm .grp{display:inline-flex;align-items:center;animation:bm 38s linear infinite}
-.bm.rev .grp{animation-direction:reverse;animation-duration:46s}
-@keyframes bm{to{transform:translateX(-100%)}}
-.bm:hover .grp{animation-play-state:paused}
-.bm.rev>.bi{margin-left:-2600px}
+.bm>.bi{display:flex;align-items:center;width:max-content;will-change:transform;animation:bm 60s linear infinite}
+.bm .grp{display:flex;flex:none;align-items:center}
+.bm.rev>.bi{animation-direction:reverse}
+@keyframes bm{to{transform:translateX(-50%)}}
+.bm:hover>.bi{animation-play-state:paused}
 .brand{--s:clamp(68px,7vw,112px);display:inline-flex;align-items:center;justify-content:center;min-width:calc(var(--w)*var(--s) + clamp(56px,7vw,110px));padding:0 clamp(28px,3.5vw,55px);height:clamp(120px,12.5vw,190px);color:var(--lil);border-right:1px solid var(--line);transition:color .25s,background .25s}
 .brand i{display:block;height:calc(var(--s)*var(--h));width:calc(var(--s)*var(--w));background:currentColor;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain}
 .brand:hover{background:var(--lil);color:#000}
@@ -251,16 +250,16 @@ header .contact{position:static;border:0;padding:0;width:auto;height:auto;displa
 .ul2 path{fill:none;stroke:var(--lil);stroke-linecap:round;vector-effect:non-scaling-stroke}
 .ul2 .a{stroke-width:5.2px}.ul2 .b{stroke-width:3px}
 .hrt{display:inline-block;width:.5em;height:.47em;margin-left:.16em;vertical-align:.02em;transform:rotate(-6deg);overflow:visible}.hrt path{fill:none;stroke:var(--lil);stroke-width:5px;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}.hrt .sh{stroke-width:4px;opacity:.9}
-.cform{max-width:760px;margin:10px 0 44px}
+.cform{max-width:min(100%,1180px);margin:10px 0 54px}
 .cform h3{margin:0 0 18px;font-size:clamp(22px,2.4vw,34px);font-weight:800;letter-spacing:-.02em;color:var(--lil)}
-.cform .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.cform label{display:block;font-size:13px;letter-spacing:.2em;font-family:var(--f-sub);font-weight:700;text-transform:uppercase;color:var(--c-sub);margin-bottom:14px}
-.cform input,.cform textarea{display:block;width:100%;margin-top:8px;padding:14px 16px;font:inherit;font-size:16px;letter-spacing:0;text-transform:none;color:var(--lil);background:rgba(0,0,0,.5);border:1px solid var(--line);border-radius:14px;outline:none;transition:border-color .2s}
-.cform textarea{resize:vertical;min-height:120px}
+.cform .row2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.cform label{display:block;font-size:15px;letter-spacing:.2em;font-family:var(--f-sub);font-weight:700;text-transform:uppercase;color:var(--c-sub);margin-bottom:22px}
+.cform input,.cform textarea{display:block;width:100%;margin-top:12px;padding:22px 26px;font:inherit;font-size:21px;letter-spacing:0;text-transform:none;color:var(--lil);background:rgba(0,0,0,.5);border:1px solid var(--line);border-radius:20px;outline:none;transition:border-color .2s}
+.cform textarea{resize:vertical;min-height:260px}
 .cform input:focus,.cform textarea:focus{border-color:var(--lil)}
 .cform ::placeholder{color:#5d4d70}
 .cact{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px}
-.btn2{font:inherit;font-weight:600;font-size:17px;padding:14px 30px;border-radius:99px;border:0;background:var(--lil);color:#000;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.btn2{font:inherit;font-weight:600;font-size:22px;padding:22px 52px;border-radius:99px;border:0;background:var(--lil);color:#000;cursor:pointer;transition:transform .2s,box-shadow .2s}
 .btn2:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(201,167,235,.35)}
 .cnote{font-family:var(--f-main);font-size:15px;color:var(--c-body)}.cnote.err{color:#ff9bb4}
 @media (max-width:700px){.cform .row2{grid-template-columns:1fr}}
@@ -373,9 +372,13 @@ const COV={"Honda":.25,"Hyundai":.38,"Brainfield School":.6,"Geely":.65,"Spotwor
 /* every logo gets the same visual area (thin/light logos a little more), wide ones capped */
 const cell=l=>{const [n,d,a]=l;const f=Math.pow(.4/(COV[n]||.4),.3);let w=Math.sqrt(a*f),h=Math.sqrt(f/a);const cap=3.3;if(w>cap){h*=cap/w;w=cap;}
   return `<span class="brand" role="img" aria-label="${n}" style="--w:${w.toFixed(2)};--h:${h.toFixed(2)}"><i style="-webkit-mask-image:url(${d});mask-image:url(${d})"></i></span>`};
-const grp=l=>`<div class="grp">${l.concat(l).map(cell).join("")}</div>`;
-$("#bi1").innerHTML=grp(LG.slice(0,6))+grp(LG.slice(0,6));
-$("#bi2").innerHTML=grp(LG.slice(6))+grp(LG.slice(6));
+const grp=l=>`<div class="grp">${l.map(cell).join("")}</div>`;
+function fillMarquee(el,list){let k=1;const half=()=>grp(Array.from({length:k},()=>list).flat());
+  el.innerHTML=half()+half();
+  while(el.firstElementChild.offsetWidth<innerWidth*1.25&&k<10){k++;el.innerHTML=half()+half();}
+  el.style.animationDuration=Math.max(20,el.firstElementChild.offsetWidth/60)+"s";}
+const bmFill=()=>{fillMarquee($("#bi1"),LG.slice(0,6));fillMarquee($("#bi2"),LG.slice(6));};
+bmFill();addEventListener("resize",bmFill);addEventListener("load",bmFill);
 
 /* smooth in-page links */
 $$('a[href^="#"]').forEach(a=>a.addEventListener("click",e=>{
@@ -448,8 +451,6 @@ function update(){
   r1.style.transform=`translateX(${-((y*.8)%w1)}px)`;
   r2.style.transform=`translateX(${(y*.8)%w2}px)`;r2.style.marginLeft=`-${w2}px`;
   /* brands */
-  bi1.style.transform=`translateX(${-y*.35}px)`;
-  bi2.style.transform=`translateX(${y*.35}px)`;
   /* services: horizontal scroll */
   if(hs){const r=hs.getBoundingClientRect(),span=hs.offsetHeight-vh,p=clamp(-r.top/Math.max(1,span),0,1),max=Math.max(0,hst.scrollWidth-innerWidth);
     hst.style.transform=`translateX(${-p*max}px)`;hsf.style.width=(p*100)+"%";hsn.textContent=String(Math.min(6,Math.round(p*5)+1)).padStart(2,"0")+" / 06";}
