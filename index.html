@@ -518,11 +518,11 @@ update();
 f.addEventListener("submit",e=>{e.preventDefault();const d=new FormData(f),n=(d.get("name")||"").trim(),m=(d.get("email")||"").trim(),g=(d.get("msg")||"").trim();
 if(!n||!/^\S+@\S+\.\S+$/.test(m)||!g){note.textContent="Please fill in your name, a valid email and a message.";note.classList.add("err");return}
 note.classList.remove("err");
-const btn=f.querySelector("button");btn.disabled=true;note.textContent="Sending…";
+const btn=f.querySelector("button");btn.disabled=true;note.textContent="Sending… this can take up to 30 seconds, please keep this page open.";
 const fallback=()=>{const body=`${g}\n\n—\n${n}\n${m}`;
   location.href="mailto:bismahtapal9@gmail.com?subject="+encodeURIComponent("Website enquiry from "+n)+"&body="+encodeURIComponent(body);
   note.textContent="Couldn’t send directly, so I’ve opened your email app instead. Or email bismahtapal9@gmail.com.";btn.disabled=false;};
-const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),12000);
+const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),60000);
 fetch("https://formsubmit.co/ajax/bismahtapal9@gmail.com",{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},signal:ctl.signal,
   body:JSON.stringify({name:n,email:m,message:g,_subject:"Website enquiry from "+n,_replyto:m,_template:"table",_captcha:"false",_honey:d.get("_honey")||""})})
  .then(r=>r.json().then(j=>{clearTimeout(to);if(r.ok&&(j.success===true||j.success==="true")){note.textContent="Thank you "+n.split(" ")[0]+"! Your message is on its way. I’ll reply soon.";f.reset();btn.disabled=false;}else fallback();}))
