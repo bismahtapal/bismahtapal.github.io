@@ -140,8 +140,11 @@ header.solid{background:rgba(0,0,0,.82);backdrop-filter:blur(8px)}
 .tag{font-family:var(--f-sub);position:absolute;left:clamp(14px,1.8vw,26px);bottom:clamp(14px,1.8vw,26px);z-index:3;font-size:clamp(12px,1.1vw,16px);font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#000;background:var(--c-pop);border-radius:99px;padding:.5em 1.1em;pointer-events:none}
 .info{position:absolute;right:clamp(14px,1.8vw,26px);bottom:clamp(14px,1.8vw,26px);z-index:5;width:44px;height:44px;border-radius:50%;border:1px solid var(--lil);background:rgba(0,0,0,.6);color:var(--lil);font:700 20px/1 "Instrument Serif",serif;font-style:italic;cursor:pointer;display:none}
 .shade{position:absolute;left:0;right:0;top:0;z-index:4;padding:clamp(20px,3vw,48px) clamp(20px,3vw,48px) clamp(60px,8vw,130px);background:linear-gradient(to bottom,rgba(0,0,0,.94) 0,rgba(0,0,0,.88) 62%,rgba(0,0,0,0) 100%);display:flex;flex-direction:column;gap:clamp(8px,1vw,16px);max-height:100%;overflow:hidden;opacity:0;transform:translateY(-14px);transition:opacity .35s,transform .35s;pointer-events:none}
-.tile:hover .shade,.tile.open .shade{opacity:1;transform:none}
-@media(hover:none){.info{display:block}}
+.tile.open .shade{opacity:1;transform:none}
+@media(hover:hover){.tile:hover .shade{opacity:1;transform:none}}
+.pb,.info{display:none!important}
+.tile video{cursor:default}
+
 @media(max-width:640px){.gallery{grid-template-columns:1fr}.tile{aspect-ratio:4/5}}
 .shade h3{margin:0;font-family:"Outfit",sans-serif;font-weight:900;font-size:clamp(34px,5.4vw,84px);line-height:.95;letter-spacing:-.045em;color:var(--c-main);text-transform:uppercase}
 .shade .cl{font-family:"Outfit",sans-serif;font-size:clamp(11px,1vw,15px);font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--c-sub)}
@@ -462,7 +465,7 @@ function tile(it,i){return `
     </div>
   </div>`;}
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}}),{threshold:.15});
-const vio=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){if(!v.dataset.manual)v.play().catch(()=>{});}else v.pause();}),{threshold:.25});
+const vio=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){v.play().catch(()=>{});}else v.pause();}),{threshold:.25});
 function render(){
   vio.disconnect();
   fEl.innerHTML=cats.map(c=>`<button class="${c===cur?"on":""}" data-c="${c}">${c}</button>`).join("");
@@ -475,10 +478,9 @@ function render(){
     v.muted=true;v.loop=true;
     const sync=()=>t.classList.toggle("playing",!v.paused&&!v.ended);
     ["play","pause","ended","playing"].forEach(ev=>v.addEventListener(ev,sync));
-    const toggle=()=>{if(v.paused){v.dataset.manual="";v.play().catch(()=>{});}else{v.dataset.manual="1";v.pause();}};
-    v.addEventListener("click",toggle);t.querySelector(".pb").addEventListener("click",toggle);
     vio.observe(v);
-    t.querySelector(".info").addEventListener("click",()=>t.classList.toggle("open"));
+    t.addEventListener("click",()=>{const was=t.classList.contains("open");g.querySelectorAll(".tile.open").forEach(x=>x.classList.remove("open"));if(!was)t.classList.add("open");});
+    t.addEventListener("mouseleave",()=>t.classList.remove("open"));
   });
 }
 render();
