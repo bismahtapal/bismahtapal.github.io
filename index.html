@@ -502,7 +502,7 @@ footer{margin-top:40px;padding:34px 16px 0}
 .hero::after{content:"";position:absolute;left:0;right:0;top:0;bottom:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,0) 41vw,rgba(0,0,0,.06) 54.0vw,rgba(0,0,0,.25) 67.0vw,rgba(0,0,0,.58) 77.4vw,rgba(0,0,0,.86) 86.8vw,#000 93vw)}
 }@media (max-width:700px),(max-aspect-ratio:103/100){.hero h1 .slider{width:100%!important}.hero h1 .ln.rot{font-size:min(16.4vw,86px)}.hero{padding-bottom:44px!important}.heroin .sub{margin-top:8px}}
 @media (max-width:700px),(max-aspect-ratio:103/100){.hero h1 .ln,.hero h1 .name,.heroin .sub{text-align:center}.hero h1 .name{margin-left:0}.hero h1 .ln.rot{justify-content:center}.hero h1 .track span{justify-content:center!important}.hero h1 .slider{margin:0 auto}.cta{justify-content:center}}
-@media (min-width:701px) and (min-aspect-ratio:16/9){.heroin{top:max(calc(50.8svh - var(--u)*416*var(--hk,1)),calc(var(--u)*72 - var(--u)*99*var(--hk,1)))!important;transform-origin:calc(var(--u)*975) 0!important;transform:scale(var(--hk,1))!important}}@media (min-width:701px) and (min-aspect-ratio:7/5) and (max-aspect-ratio:15999/9000){.heroin{transform-origin:calc(var(--u)*975) 50%!important;transform:scale(var(--hw,1))!important}}body.go .flash i{animation-play-state:running}</style>
+@media (min-width:701px) and (min-aspect-ratio:16/9){.heroin{top:max(calc(50.8svh - var(--u)*416*var(--hk,1)),calc(var(--u)*72 - var(--u)*99*var(--hk,1)))!important;transform-origin:calc(var(--u)*975) 0!important;transform:scale(var(--hk,1))!important}}@media (min-width:701px) and (min-aspect-ratio:7/5) and (max-aspect-ratio:15999/9000){.heroin{transform-origin:calc(var(--u)*975) 50%!important;transform:scale(var(--hw,1))!important}}body.go .flash i{animation-play-state:running}.sg{opacity:0}.sg.rdy{opacity:1;transition:opacity .35s ease-out}</style>
 </head>
 <body>
 <div id="bar"></div>
@@ -590,8 +590,11 @@ const reduce = matchMedia("(prefers-reduced-motion:reduce)").matches;
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
 
-/* camera flash fires as soon as the page is ready */
-(function(){const go=()=>requestAnimationFrame(()=>document.body.classList.add('go'));if(document.readyState==='complete')go();else addEventListener('load',go);setTimeout(go,4000);})();
+/* scene, lights, tail and flash all appear together once the picture is decoded */
+(function(){const sg=document.querySelector('.sg'),im=document.querySelector('.scn');let d=0;const go=()=>{if(d)return;d=1;requestAnimationFrame(()=>{sg&&sg.classList.add('rdy');document.body.classList.add('go');});};
+const ok=()=>im&&im.decode?im.decode().then(go,go):go();
+if(!im)go();else if(im.complete)ok();else{im.addEventListener('load',ok);im.addEventListener('error',go);}
+setTimeout(go,6000);})();
 /* words slider */
 (function(){
   const sl=$("#slider"),tr=$("#track"),ws=[...tr.children],n=ws.length-1;let i=0;
