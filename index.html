@@ -354,7 +354,7 @@ header .contact{position:static;border:0;padding:0;width:auto;height:auto;displa
 @media (min-width:701px) and (min-aspect-ratio:1031/1000) and (max-aspect-ratio:7/5){
 .hero h1 .name,.hero h1 .ln:nth-child(2),.hero h1 .ln.rot,.heroin .sub{left:calc(var(--u)*1250)!important;transform:translateX(-100%)!important;text-align:right!important}
 .hero h1 .ln:nth-child(2){width:min-content!important}
-.hero h1 .track span{justify-content:flex-end!important}
+.hero h1 .track span{justify-content:flex-end!important;transform-origin:100% 62%!important}
 .btn{left:calc(var(--u)*979)!important}.ghost{left:calc(var(--u)*1250 - var(--u)*248)!important}
 .btn{left:calc(var(--u)*(1250 - 248 - 16 - 255))!important}
 .heroin{transform-origin:calc(var(--u)*1250) calc(var(--u)*517)!important;transform:translate(calc(94vw - var(--u)*1250),calc(var(--off)*-1 + var(--H)*.40 - var(--u)*517)) scale(.78)!important}
@@ -598,7 +598,7 @@ setTimeout(go,6000);})();
 /* words slider */
 (function(){
   const sl=$("#slider"),tr=$("#track"),ws=[...tr.children],n=ws.length-1;let i=0;
-  const widthOf=el=>{const c=el.cloneNode(true);c.style.cssText="position:absolute;visibility:hidden;display:inline-block;height:auto;transform:none";sl.appendChild(c);const w=c.offsetWidth+1;c.remove();const mx=matchMedia("(max-width:700px),(max-aspect-ratio:103/100)").matches?innerWidth-32:innerWidth*600/1456;const k=Math.min(1,mx/w);el.style.setProperty("--k",k.toFixed(3));return Math.ceil(w*k)+4;};
+  const widthOf=el=>{const c=el.cloneNode(true);c.style.cssText="position:absolute;visibility:hidden;display:inline-block;height:auto;transform:none";sl.appendChild(c);const w=c.offsetWidth+1;c.remove();const mx=matchMedia("(max-width:700px),(max-aspect-ratio:103/100)").matches?innerWidth-32:(matchMedia("(min-width:701px) and (min-aspect-ratio:1031/1000) and (max-aspect-ratio:7/5)").matches?innerWidth*820/1456:innerWidth*600/1456);const k=Math.min(1,mx/w);el.style.setProperty("--k",k.toFixed(3));return Math.ceil(w*k)+4;};
   const setW=()=>{sl.style.width=widthOf(ws[i%n])+"px";};
   const step=()=>{i++;tr.style.transition="";tr.style.transform=`translateY(-${i*ws[0].offsetHeight}px)`;sl.style.width=widthOf(ws[i])+"px";
     if(i===n){setTimeout(()=>{tr.style.transition="none";i=0;tr.style.transform="translateY(0)";},650);}};
