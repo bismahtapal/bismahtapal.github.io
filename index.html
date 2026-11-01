@@ -667,7 +667,8 @@ function fillMarquee(el,list){let k=1;const half=()=>grp(Array.from({length:k},(
   el.innerHTML=half()+half();
   while(el.firstElementChild.offsetWidth<innerWidth*1.25&&k<10){k++;el.innerHTML=half()+half();}
   el.style.animationDuration=Math.max(20,el.firstElementChild.offsetWidth/60)+"s";}
-const bmFill=()=>{fillMarquee($("#bi1"),LG.slice(0,6));fillMarquee($("#bi2"),LG.slice(6));};
+const ORD=["Honda","VELO","Brainfield School","Geely","Spotwork","Dani","Metana Tech","Jubilee Life Insurance","Corridor Newtown","BAT","Hyundai","Bestway","Bags To Go"].map(n=>LG.find(l=>l[0]===n)).filter(Boolean);
+const bmFill=()=>{fillMarquee($("#bi1"),ORD.slice(0,6));fillMarquee($("#bi2"),ORD.slice(6));};
 bmFill();addEventListener("resize",bmFill);addEventListener("load",bmFill);
 
 /* smooth in-page links */
